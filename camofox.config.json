@@ -5,6 +5,7 @@
   "plugins": {
     "youtube": { "enabled": true },
     "persistence": { "enabled": true },
+    "session-manager": { "enabled": true },
     "vnc": { "resolution": "1920x1080" }
   }
 }

@@ -793,7 +793,14 @@ async function getSession(userId) {
         log('info', 'session proxy assigned', { userId: key, proxy: sessionProxy.server });
       }
       await pluginEvents.emitAsync('session:creating', { userId: key, contextOptions });
-      const context = await b.newContext(contextOptions);
+      let context;
+      if (contextOptions.userDataDir) {
+        const userDataDir = contextOptions.userDataDir;
+        delete contextOptions.userDataDir;
+        context = await b.browserType().launchPersistentContext(userDataDir, contextOptions);
+      } else {
+        context = await b.newContext(contextOptions);
+      }
       
       const created = { context, tabGroups: new Map(), lastAccess: Date.now(), proxySessionId: sessionProxy?.sessionId || null };
       sessions.set(key, created);
